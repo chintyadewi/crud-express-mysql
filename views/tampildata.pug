@@ -1,0 +1,15 @@
+html
+  head
+    title Ini Pug
+  body
+    h1 Test Template Engine Pug
+    
+    a(href=`/create`) Tambah Data
+    each bio, i in biodata
+      p #{i}
+      p Nama: #{bio.nama}
+      p Alamat: #{bio.alamat}
+      
+      form(action=`/${bio.id_biodata}?_method=DELETE` method="post")
+        input(type="submit" value="HAPUS")
+        a(href=`/${bio.id_biodata}/edit`) Ubah
