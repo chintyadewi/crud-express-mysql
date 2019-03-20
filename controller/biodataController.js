@@ -1,39 +1,45 @@
-const biodata = require('../model/Biodata')
+const Biodata = require('../model/Biodata')
 const path = require('path')
 
 module.exports = {
-    index(req, res) {
-        biodata.get(function (err, rows) {
+    index: function(req, res) {
+        Biodata.findAll().then(function (rows) {
             res.render('tampildata', {
                 biodata: rows
             })
         })
     },
-    show(req, res) {
-        biodata.getById(req.params.id, function(err, rows){
-            res.send("gk ada view nya")
-        })
-    },
-    create(req, res) {
+    create:function(req, res) {
         res.sendFile(path.resolve('form.html'))
     },
-    store(req, res) {
-        let data = req.body
-        biodata.create(data, res.redirect('/biodata'))
+    store:function(req, res) {
+        Biodata.create(req.body).then(function(){
+            res.redirect('/biodata')
+        })
     },
-    edit(req, res) {
-        biodata.getById(req.params.id, function (err, row) {
+    edit:function(req, res) {
+        Biodata.findByPk(req.params.id).then(function(row) {
             res.render('edit', {
-                data: row[0],
-                index: row[0].id_biodata
+                data: row,
+                index: row.id_biodata
             })
         })
     },
-    update(req, res) {
-        let data = req.body
-        biodata.update(req.params.id, data, res.redirect('/biodata'))
+    update:function(req, res) {
+        Biodata.findByPk(req.params.id).then(function(row){
+            row.update(req.body)
+            .then(() => res.redirect('/biodata'))
+        })
     },
-    destroy(req, res){
-        biodata.destroy(req.params.id, res.redirect('/biodata'))
+    destroy:function(req, res){
+        Biodata.findByPk(req.params.id).then(function(row){
+            row.destroy()
+            res.redirect('/biodata')
+        })
+    },
+    show:function(req, res) {
+        biodata.findByPk(req.params.id).then(function(row){
+            res.send("gk ada view nya")
+        })
     }
 }

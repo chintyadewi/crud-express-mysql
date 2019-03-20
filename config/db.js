@@ -1,8 +1,6 @@
-const mysql=require("mysql")
-
-module.exports=mysql.createConnection({
-    host:'localhost',
-    user:'root',
-    password:'',
-    database:'crud-express'
+const Sequelize=require("sequelize");
+const sequelize=new Sequelize("crud-express","root","",{
+    host:"localhost",
+    dialect:"mysql"
 })
+module.exports=sequelize;
